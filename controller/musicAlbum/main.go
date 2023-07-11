@@ -72,3 +72,8 @@ func CreateAlbum(albumData CreateMusicAlbum)(uint,error){
 
 	return musicAlbumData.ID,err
 }
+
+func DeleteAlbum(albumId uint)error{
+	err := server.DbConnection.Model(&model.MusicAlbum{}).Where("id=?",albumId).Update("is_deleted",true).Error
+	return err
+}

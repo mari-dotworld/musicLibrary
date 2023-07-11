@@ -30,8 +30,6 @@ func main() {
 	app.PUT("/album/:id",func(ctx *gin.Context) {
 
 	})
-	app.DELETE("/album/:id",func(ctx *gin.Context) {
-
-	})
+	app.DELETE("/album/:id",handler.DeleteAlbum)
 	app.Run("localhost:8080")
 }

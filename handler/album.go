@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -35,13 +36,13 @@ func GetAlbum(ctx *gin.Context){
 		return
 	}
 
-	// if albumData.ID == 0 {
-	// 	ctx.JSON(404,map[string]string{
-	// 		"message":"album not found",
-	// 	})
-	// 	ctx.Abort()
-	// 	return
-	// }
+	if albumData.Url == "" {
+		ctx.JSON(404,map[string]string{
+			"message":"album not found",
+		})
+		ctx.Abort()
+		return
+	}
 	ctx.JSON(200,albumData)
 }
 
@@ -76,5 +77,26 @@ func UpdateAlbum(ctx *gin.Context){
 }
 
 func DeleteAlbum(ctx *gin.Context){
+	albumId,err := strconv.Atoi(ctx.Param("id"))
 
+	if err != nil {
+		ctx.JSON(500,map[string]string{
+			"message":"something went wrong",
+		})
+		ctx.Abort()
+		return
+	}
+
+	err = musicalbum.DeleteAlbum(uint(albumId))
+	if err != nil {
+	    fmt.Println(err)
+		ctx.JSON(500,map[string]string{
+			"message":"something went wrong",
+		})
+		ctx.Abort()
+		return
+	}
+	ctx.JSON(200,map[string]string{
+			"message":"ok",
+	})
 }
