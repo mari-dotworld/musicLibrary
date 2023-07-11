@@ -10,6 +10,7 @@ import (
 	"github.com/musicLibrary/server"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
@@ -26,7 +27,9 @@ func ConnectDB() error {
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
+		Logger : logger.Default.LogMode(logger.Silent),
 	})
+	
 	if os.Getenv("MIGRATION") != "" && os.Getenv("MIGRATION") == "true"{
         fmt.Println("Migration started")
 		server.DbConnection.AutoMigrate(&model.Artist{},&model.MusicAlbum{},&model.Song{})
